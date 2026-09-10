@@ -229,13 +229,13 @@
             <div class="header-title">
                 <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                     <h1>📋 Wheel Strategy — Open Positions</h1>
-                    <span style="background: rgba(0, 230, 118, 0.12); color: var(--accent-green); border: 1px solid rgba(0, 230, 118, 0.3); padding: 4px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.3px;">🗓️ September 2026 Cycle</span>
+                    <span style="background: rgba(0, 230, 118, 0.12); color: var(--accent-green); border: 1px solid rgba(0, 230, 118, 0.3); padding: 4px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.3px;">🗓️ September 2026</span>
                 </div>
-                <div class="subtitle">Live snapshot of active September monthly options contracts (cash-secured puts & covered calls)</div>
+                <div class="subtitle">Live snapshot of active monthly options contracts (cash-secured puts & covered calls)</div>
             </div>
             <div class="last-updated-badge">
                 <span class="status-dot"></span>
-                <span>Updated: Sep 09, 2026 21:20 PDT</span>
+                <span>Updated: Sep 09, 2026 21:22 PDT</span>
             </div>
         </header>
 
@@ -245,7 +245,7 @@
 
         <div class="table-container">
             <div class="table-header-wrap">
-                <h2>⚡ Open Option Positions (September 2026 Cycle)</h2>
+                <h2>⚡ Open Option Positions</h2>
                 <div class="filter-group">
                     <button class="filter-btn active" onclick="setFilter('ALL')">All</button>
                     <button class="filter-btn" onclick="setFilter('CSP')">CSPs</button>
@@ -302,22 +302,22 @@
 
         document.getElementById('summary-cards').innerHTML = `
             <div class="card">
-                <div class="card-label">Active September Positions</div>
+                <div class="card-label">Active Positions</div>
                 <div class="card-val">${openPositions.length} <span style="font-size: 0.95rem; color: var(--text-muted); font-weight: 500;">(${totContracts} contracts)</span></div>
-                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">September 2026 monthly cycle</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">monthly options contracts</div>
             </div>
             <div class="card">
-                <div class="card-label">September Capital Allocated</div>
+                <div class="card-label">Capital Allocated</div>
                 <div class="card-val blue">${formatCurrency(totCap)}</div>
                 <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">cash collateral & covered stock</div>
             </div>
             <div class="card">
-                <div class="card-label">September Premium Collected</div>
+                <div class="card-label">Premium Collected</div>
                 <div class="card-val green">${formatCurrency(totPrem)}</div>
-                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">net cash collected for September</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">net cash collected this cycle</div>
             </div>
             <div class="card">
-                <div class="card-label">September Return on Capital</div>
+                <div class="card-label">Return on Capital</div>
                 <div class="card-val green">${avgReturn}% <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-muted);">/ mo</span></div>
                 <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">~${(avgReturn * 12).toFixed(1)}% annualized pace</div>
             </div>
@@ -391,7 +391,7 @@
             }).join('');
 
             totalRow.innerHTML = `
-                <td colspan="8">September Total (${filtered.length} Positions)</td>
+                <td colspan="8">Total (${filtered.length} Positions)</td>
                 <td class="text-right" style="color: #64b5f6;">${formatCurrency(subCap)}</td>
                 <td class="text-right positive">${formatCurrency(subPrem)}</td>
                 <td class="text-right positive">${subCap > 0 ? ((subPrem / subCap) * 100).toFixed(2) + '%' : '-'}</td>
