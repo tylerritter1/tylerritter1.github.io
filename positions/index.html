@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Wheel Strategy — Open Positions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #090a0f;
+            --surface-color: rgba(22, 27, 34, 0.75);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-green: #00e676;
+            --accent-red: #ff5252;
+            --accent-blue: #2979ff;
+            --accent-gold: #ffbf69;
+            --text-main: #f0f2f5;
+            --text-muted: #8b92a5;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(41, 121, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 230, 118, 0.06) 0%, transparent 40%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 25px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-title h1 {
+            margin: 0;
+            font-size: 1.85rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-title .subtitle {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin-top: 5px;
+        }
+        .last-updated-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 18px 20px;
+            backdrop-filter: blur(16px);
+        }
+        .card-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .card-val {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .card-val.green { color: var(--accent-green); }
+        .card-val.blue { color: #64b5f6; }
+        .table-container {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(16px);
+            overflow-x: auto;
+        }
+        .table-header-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-group {
+            display: flex;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .filter-btn.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th {
+            text-align: left;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+        td {
+            padding: 12px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            white-space: nowrap;
+        }
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+        .badge-csp {
+            background: rgba(41, 121, 255, 0.15);
+            color: #64b5f6;
+            border: 1px solid rgba(41, 121, 255, 0.3);
+        }
+        .badge-cc {
+            background: rgba(255, 191, 105, 0.15);
+            color: #ffbf69;
+            border: 1px solid rgba(255, 191, 105, 0.3);
+        }
+        .positive { color: var(--accent-green); }
+        .negative { color: var(--accent-red); }
+        .text-right { text-align: right; }
+        .footer-total td {
+            font-weight: 800;
+            border-top: 2px solid var(--border-color);
+            border-bottom: none;
+            padding-top: 14px;
+            color: #fff;
+        }
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        @media (max-width: 600px) {
+            body { padding: 15px 10px; }
+            .cards { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .card { padding: 14px; }
+            .card-val { font-size: 1.3rem; }
+            .table-container { padding: 15px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-title">
+                <h1>📋 Wheel Strategy — Open Positions</h1>
+                <div class="subtitle">Live snapshot of active cash-secured puts, covered calls, and assigned stock</div>
+            </div>
+            <div class="last-updated-badge">
+                <span class="status-dot"></span>
+                <span>Updated: Sep 09, 2026 19:13 PDT</span>
+            </div>
+        </header>
+
+        <div class="cards" id="summary-cards">
+            <!-- Dynamic stats -->
+        </div>
+
+        <div class="table-container">
+            <div class="table-header-wrap">
+                <h2>⚡ Open Option Positions</h2>
+                <div class="filter-group">
+                    <button class="filter-btn active" onclick="setFilter('ALL')">All</button>
+                    <button class="filter-btn" onclick="setFilter('CSP')">CSPs</button>
+                    <button class="filter-btn" onclick="setFilter('CC')">Covered Calls</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date Opened</th>
+                        <th>Strat</th>
+                        <th>Ticker</th>
+                        <th class="text-right">Stock Price</th>
+                        <th>Strike</th>
+                        <th>Expiration</th>
+                        <th>DTE</th>
+                        <th class="text-right">Qty</th>
+                        <th class="text-right">Capital Req</th>
+                        <th class="text-right">Premium</th>
+                        <th class="text-right">Return %</th>
+                    </tr>
+                </thead>
+                <tbody id="open-positions-body"></tbody>
+                <tfoot>
+                    <tr id="open-positions-total" class="footer-total"></tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="table-container" id="uncovered-container">
+            <div class="table-header-wrap">
+                <h2>📦 Uncovered Long Positions</h2>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Assigned stock held for writing covered calls</div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date Bought</th>
+                        <th>Ticker</th>
+                        <th class="text-right">Current Price</th>
+                        <th class="text-right">Assigned Strike</th>
+                        <th class="text-right">Shares</th>
+                        <th class="text-right">% Away from Strike</th>
+                    </tr>
+                </thead>
+                <tbody id="uncovered-body"></tbody>
+            </table>
+        </div>
+
+        <footer>
+            Wheel Strategy Portfolio Tracker • Auto-synced daily
+        </footer>
+    </div>
+
+    <script>
+        const openPositions = [{"ticker": "COIN", "strategy": "CSP", "strike": "$175", "strike_val": 175.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 17500.0, "premium": 901.32, "open_date": "Sep 01, 2026", "current_price": 174.72000122070312}, {"ticker": "PYPL", "strategy": "CSP", "strike": "$53", "strike_val": 53.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 4, "cap_req": 21200.0, "premium": 773.33, "open_date": "Aug 28, 2026", "current_price": 52.16999816894531}, {"ticker": "QCOM", "strategy": "CSP", "strike": "$160", "strike_val": 160.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 16000.0, "premium": 543.32, "open_date": "Sep 01, 2026", "current_price": 176.39999389648438}, {"ticker": "FISV", "strategy": "CC", "strike": "$54", "strike_val": 54.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 2, "cap_req": 10800.0, "premium": 374.67, "open_date": "Aug 31, 2026", "current_price": 48.650001525878906}, {"ticker": "CCL", "strategy": "CSP", "strike": "$24", "strike_val": 24.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 4, "cap_req": 9600.0, "premium": 349.35, "open_date": "Aug 31, 2026", "current_price": 22.700000762939453}, {"ticker": "OKLO", "strategy": "CC", "strike": "$41", "strike_val": 41.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 4100.0, "premium": 295.34, "open_date": "Aug 31, 2026", "current_price": 42.56999969482422}, {"ticker": "LVS", "strategy": "CSP", "strike": "$45", "strike_val": 45.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 2, "cap_req": 9000.0, "premium": 274.67, "open_date": "Aug 27, 2026", "current_price": 43.33000183105469}, {"ticker": "OKLO", "strategy": "CSP", "strike": "$38", "strike_val": 38.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 3800.0, "premium": 262.34, "open_date": "Sep 01, 2026", "current_price": 42.56999969482422}, {"ticker": "DKS", "strategy": "CSP", "strike": "$125", "strike_val": 125.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 12500.0, "premium": 195.34, "open_date": "Sep 03, 2026", "current_price": 133.36000061035156}, {"ticker": "WYNN", "strategy": "CSP", "strike": "$90", "strike_val": 90.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 9000.0, "premium": 193.34, "open_date": "Sep 03, 2026", "current_price": 90.2300033569336}, {"ticker": "LULU", "strategy": "CSP", "strike": "$95", "strike_val": 95.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 9500.0, "premium": 188.34, "open_date": "Sep 04, 2026", "current_price": 99.72000122070312}, {"ticker": "OKLO", "strategy": "CC", "strike": "$50", "strike_val": 50.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 5000.0, "premium": 122.0, "open_date": "Sep 08, 2026", "current_price": 42.56999969482422}, {"ticker": "RIVN", "strategy": "CSP", "strike": "$14", "strike_val": 14.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 5, "cap_req": 7000.0, "premium": 121.68, "open_date": "Sep 01, 2026", "current_price": 16.0049991607666}, {"ticker": "UBER", "strategy": "CC", "strike": "$81", "strike_val": 81.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 8100.0, "premium": 113.34, "open_date": "Sep 02, 2026", "current_price": 71.08000183105469}];
+        const uncoveredLongs = [{"ticker": "SOUN", "date_bought": "Feb 02, 2026", "strike": 16.75, "qty": 500, "mark": 6.480000019073486}, {"ticker": "JD", "date_bought": "Aug 21, 2026", "strike": 32.5, "qty": 600, "mark": 27.0}];
+
+        function formatCurrency(val) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0, minimumFractionDigits: 0 }).format(Math.round(val));
+        }
+
+        function formatPrice(val) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(val);
+        }
+
+        // Render Summary Cards
+        let totContracts = 0, totCap = 0, totPrem = 0;
+        openPositions.forEach(p => {
+            totContracts += (p.qty || 1);
+            totCap += (p.cap_req || 0);
+            totPrem += (p.premium || 0);
+        });
+        const avgReturn = totCap > 0 ? (totPrem / totCap * 100).toFixed(2) : '0.00';
+        const totalUncoveredShares = uncoveredLongs.reduce((sum, p) => sum + (p.qty || 0), 0);
+
+        document.getElementById('summary-cards').innerHTML = `
+            <div class="card">
+                <div class="card-label">Active Positions</div>
+                <div class="card-val">${openPositions.length} <span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">(${totContracts} contracts)</span></div>
+            </div>
+            <div class="card">
+                <div class="card-label">Capital Required</div>
+                <div class="card-val blue">${formatCurrency(totCap)}</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Net Premium Collected</div>
+                <div class="card-val green">${formatCurrency(totPrem)}</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Return on Capital</div>
+                <div class="card-val green">${avgReturn}%</div>
+            </div>
+            ${uncoveredLongs.length > 0 ? `
+            <div class="card">
+                <div class="card-label">Uncovered Stock</div>
+                <div class="card-val">${uncoveredLongs.length} tickers <span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">(${totalUncoveredShares} shs)</span></div>
+            </div>` : ''}
+        `;
+
+        let currentFilter = 'ALL';
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.includes(filter === 'ALL' ? 'All' : filter === 'CSP' ? 'CSP' : 'Covered'));
+            });
+            renderPositions();
+        }
+
+        function renderPositions() {
+            const tbody = document.getElementById('open-positions-body');
+            const totalRow = document.getElementById('open-positions-total');
+            const filtered = openPositions.filter(p => currentFilter === 'ALL' || p.strategy === currentFilter);
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; color: var(--text-muted); padding: 30px;">No open positions found</td></tr>';
+                totalRow.innerHTML = '';
+                return;
+            }
+
+            let subCap = 0, subPrem = 0;
+            tbody.innerHTML = filtered.map(p => {
+                subCap += (p.cap_req || 0);
+                subPrem += (p.premium || 0);
+                const retPct = p.cap_req > 0 ? ((p.premium / p.cap_req) * 100).toFixed(2) + '%' : '-';
+                
+                let dteDisplay = '-';
+                if (p.dte !== undefined && p.dte !== null && p.dte !== 'N/A') {
+                    dteDisplay = `${p.dte}d`;
+                } else if (p.expiration && p.expiration !== 'N/A') {
+                    const expD = new Date(p.expiration);
+                    if (!isNaN(expD)) {
+                        const nowD = new Date();
+                        nowD.setHours(0,0,0,0);
+                        expD.setHours(0,0,0,0);
+                        const diff = Math.ceil((expD - nowD) / 86400000);
+                        dteDisplay = `${Math.max(0, diff)}d`;
+                    }
+                }
+
+                // Price color based on strike
+                let priceColor = 'var(--text-muted)';
+                if (p.current_price > 0 && p.strike_val > 0) {
+                    if (p.strategy === 'CSP') {
+                        priceColor = p.current_price >= p.strike_val ? 'var(--accent-green)' : 'var(--accent-red)';
+                    } else {
+                        priceColor = p.current_price <= p.strike_val ? 'var(--accent-green)' : 'var(--accent-red)';
+                    }
+                }
+
+                return `
+                    <tr>
+                        <td style="color: var(--text-muted);">${p.open_date}</td>
+                        <td><span class="badge ${p.strategy === 'CSP' ? 'badge-csp' : 'badge-cc'}">${p.strategy}</span></td>
+                        <td><strong style="color: #fff; font-size: 1rem;">${p.ticker}</strong></td>
+                        <td class="text-right" style="font-weight: 700; color: ${priceColor};">${p.current_price > 0 ? formatPrice(p.current_price) : '-'}</td>
+                        <td style="font-weight: 700; color: #fff;">${p.strike}</td>
+                        <td>${p.expiration}</td>
+                        <td style="font-weight: 600; color: var(--text-muted);">${dteDisplay}</td>
+                        <td class="text-right" style="font-weight: 700;">${p.qty}</td>
+                        <td class="text-right" style="color: var(--text-muted);">${formatCurrency(p.cap_req)}</td>
+                        <td class="text-right positive" style="font-weight: 700;">${formatCurrency(p.premium)}</td>
+                        <td class="text-right positive" style="font-weight: 700;">${retPct}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            totalRow.innerHTML = `
+                <td colspan="8">Total (${filtered.length} Positions)</td>
+                <td class="text-right" style="color: #64b5f6;">${formatCurrency(subCap)}</td>
+                <td class="text-right positive">${formatCurrency(subPrem)}</td>
+                <td class="text-right positive">${subCap > 0 ? ((subPrem / subCap) * 100).toFixed(2) + '%' : '-'}</td>
+            `;
+        }
+
+        // Render Uncovered Longs
+        const uncBody = document.getElementById('uncovered-body');
+        const uncContainer = document.getElementById('uncovered-container');
+        if (uncoveredLongs.length > 0) {
+            const sortedLongs = [...uncoveredLongs].sort((a,b) => {
+                const pctA = a.strike > 0 ? (a.mark - a.strike) / a.strike : -99;
+                const pctB = b.strike > 0 ? (b.mark - b.strike) / b.strike : -99;
+                return pctB - pctA;
+            });
+
+            uncBody.innerHTML = sortedLongs.map(p => {
+                const pctAway = p.strike > 0 ? ((p.mark - p.strike) / p.strike * 100).toFixed(2) : '0.00';
+                const pctClass = pctAway >= 0 ? 'positive' : 'negative';
+                return `
+                    <tr>
+                        <td style="color: var(--text-muted);">${p.date_bought}</td>
+                        <td><strong style="color: #fff; font-size: 1rem;">${p.ticker}</strong></td>
+                        <td class="text-right" style="font-weight: 700; color: ${p.mark <= 0 ? 'var(--text-muted)' : (p.mark >= p.strike ? 'var(--accent-green)' : 'var(--accent-red)')}">${p.mark > 0 ? formatPrice(p.mark) : '-'}</td>
+                        <td class="text-right" style="font-weight: 700; color: #fff;">${formatPrice(p.strike)}</td>
+                        <td class="text-right" style="font-weight: 700;">${p.qty}</td>
+                        <td class="text-right ${pctClass}" style="font-weight: 700;">${pctAway > 0 ? '+' : ''}${pctAway}%</td>
+                    </tr>
+                `;
+            }).join('');
+        } else {
+            uncContainer.style.display = 'none';
+        }
+
+        renderPositions();
+    </script>
+</body>
+</html>
