@@ -228,11 +228,11 @@
         <header>
             <div class="header-title">
                 <h1>📋 Wheel Strategy — Open Positions</h1>
-                <div class="subtitle">Live snapshot of active cash-secured puts, covered calls, and assigned stock</div>
+                <div class="subtitle">Live snapshot of active monthly options contracts (cash-secured puts & covered calls)</div>
             </div>
             <div class="last-updated-badge">
                 <span class="status-dot"></span>
-                <span>Updated: Sep 09, 2026 19:13 PDT</span>
+                <span>Updated: Sep 09, 2026 19:37 PDT</span>
             </div>
         </header>
 
@@ -242,7 +242,7 @@
 
         <div class="table-container">
             <div class="table-header-wrap">
-                <h2>⚡ Open Option Positions</h2>
+                <h2>⚡ Open Option Positions (Active Monthly Cycle)</h2>
                 <div class="filter-group">
                     <button class="filter-btn active" onclick="setFilter('ALL')">All</button>
                     <button class="filter-btn" onclick="setFilter('CSP')">CSPs</button>
@@ -260,9 +260,9 @@
                         <th>Expiration</th>
                         <th>DTE</th>
                         <th class="text-right">Qty</th>
-                        <th class="text-right">Capital Req</th>
-                        <th class="text-right">Premium</th>
-                        <th class="text-right">Return %</th>
+                        <th class="text-right">Monthly Capital Req</th>
+                        <th class="text-right">Monthly Premium</th>
+                        <th class="text-right">Monthly Return</th>
                     </tr>
                 </thead>
                 <tbody id="open-positions-body"></tbody>
@@ -298,7 +298,7 @@
     </div>
 
     <script>
-        const openPositions = [{"ticker": "COIN", "strategy": "CSP", "strike": "$175", "strike_val": 175.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 17500.0, "premium": 901.32, "open_date": "Sep 01, 2026", "current_price": 174.72000122070312}, {"ticker": "PYPL", "strategy": "CSP", "strike": "$53", "strike_val": 53.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 4, "cap_req": 21200.0, "premium": 773.33, "open_date": "Aug 28, 2026", "current_price": 52.16999816894531}, {"ticker": "QCOM", "strategy": "CSP", "strike": "$160", "strike_val": 160.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 16000.0, "premium": 543.32, "open_date": "Sep 01, 2026", "current_price": 176.39999389648438}, {"ticker": "FISV", "strategy": "CC", "strike": "$54", "strike_val": 54.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 2, "cap_req": 10800.0, "premium": 374.67, "open_date": "Aug 31, 2026", "current_price": 48.650001525878906}, {"ticker": "CCL", "strategy": "CSP", "strike": "$24", "strike_val": 24.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 4, "cap_req": 9600.0, "premium": 349.35, "open_date": "Aug 31, 2026", "current_price": 22.700000762939453}, {"ticker": "OKLO", "strategy": "CC", "strike": "$41", "strike_val": 41.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 4100.0, "premium": 295.34, "open_date": "Aug 31, 2026", "current_price": 42.56999969482422}, {"ticker": "LVS", "strategy": "CSP", "strike": "$45", "strike_val": 45.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 2, "cap_req": 9000.0, "premium": 274.67, "open_date": "Aug 27, 2026", "current_price": 43.33000183105469}, {"ticker": "OKLO", "strategy": "CSP", "strike": "$38", "strike_val": 38.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 3800.0, "premium": 262.34, "open_date": "Sep 01, 2026", "current_price": 42.56999969482422}, {"ticker": "DKS", "strategy": "CSP", "strike": "$125", "strike_val": 125.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 12500.0, "premium": 195.34, "open_date": "Sep 03, 2026", "current_price": 133.36000061035156}, {"ticker": "WYNN", "strategy": "CSP", "strike": "$90", "strike_val": 90.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 9000.0, "premium": 193.34, "open_date": "Sep 03, 2026", "current_price": 90.2300033569336}, {"ticker": "LULU", "strategy": "CSP", "strike": "$95", "strike_val": 95.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 9500.0, "premium": 188.34, "open_date": "Sep 04, 2026", "current_price": 99.72000122070312}, {"ticker": "OKLO", "strategy": "CC", "strike": "$50", "strike_val": 50.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 5000.0, "premium": 122.0, "open_date": "Sep 08, 2026", "current_price": 42.56999969482422}, {"ticker": "RIVN", "strategy": "CSP", "strike": "$14", "strike_val": 14.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 5, "cap_req": 7000.0, "premium": 121.68, "open_date": "Sep 01, 2026", "current_price": 16.0049991607666}, {"ticker": "UBER", "strategy": "CC", "strike": "$81", "strike_val": 81.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 8100.0, "premium": 113.34, "open_date": "Sep 02, 2026", "current_price": 71.08000183105469}];
+        const openPositions = [{"ticker": "COIN", "strategy": "CSP", "strike": "$175", "strike_val": 175.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 17500.0, "premium": 901.32, "open_date": "Sep 01, 2026", "current_price": 174.72000122070312}, {"ticker": "PYPL", "strategy": "CSP", "strike": "$53", "strike_val": 53.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 4, "cap_req": 21200.0, "premium": 773.33, "open_date": "Aug 28, 2026", "current_price": 52.16999816894531}, {"ticker": "QCOM", "strategy": "CSP", "strike": "$160", "strike_val": 160.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 16000.0, "premium": 543.32, "open_date": "Sep 01, 2026", "current_price": 176.39999389648438}, {"ticker": "FISV", "strategy": "CC", "strike": "$54", "strike_val": 54.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 2, "cap_req": 10800.0, "premium": 374.67, "open_date": "Aug 31, 2026", "current_price": 48.650001525878906}, {"ticker": "CCL", "strategy": "CSP", "strike": "$24", "strike_val": 24.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 4, "cap_req": 9600.0, "premium": 349.35, "open_date": "Aug 31, 2026", "current_price": 22.700000762939453}, {"ticker": "OKLO", "strategy": "CC", "strike": "$41", "strike_val": 41.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 4100.0, "premium": 295.34, "open_date": "Aug 31, 2026", "current_price": 42.56999969482422}, {"ticker": "LVS", "strategy": "CSP", "strike": "$45", "strike_val": 45.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 2, "cap_req": 9000.0, "premium": 274.67, "open_date": "Aug 27, 2026", "current_price": 43.33000183105469}, {"ticker": "OKLO", "strategy": "CSP", "strike": "$38", "strike_val": 38.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 3800.0, "premium": 262.34, "open_date": "Sep 01, 2026", "current_price": 42.56999969482422}, {"ticker": "DKS", "strategy": "CSP", "strike": "$125", "strike_val": 125.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 12500.0, "premium": 195.34, "open_date": "Sep 03, 2026", "current_price": 133.36000061035156}, {"ticker": "WYNN", "strategy": "CSP", "strike": "$90", "strike_val": 90.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 9000.0, "premium": 193.34, "open_date": "Sep 03, 2026", "current_price": 90.2300033569336}, {"ticker": "LULU", "strategy": "CSP", "strike": "$95", "strike_val": 95.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 9500.0, "premium": 188.34, "open_date": "Sep 04, 2026", "current_price": 99.72000122070312}, {"ticker": "RIVN", "strategy": "CSP", "strike": "$14", "strike_val": 14.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 5, "cap_req": 7000.0, "premium": 121.68, "open_date": "Sep 01, 2026", "current_price": 16.0049991607666}, {"ticker": "OKLO", "strategy": "CC", "strike": "$50", "strike_val": 50.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 5000.0, "premium": 121.34, "open_date": "Sep 08, 2026", "current_price": 42.56999969482422}, {"ticker": "UBER", "strategy": "CC", "strike": "$81", "strike_val": 81.0, "expiration": "Sep 25, 2026", "dte": 16, "qty": 1, "cap_req": 8100.0, "premium": 113.34, "open_date": "Sep 02, 2026", "current_price": 71.08000183105469}];
         const uncoveredLongs = [{"ticker": "SOUN", "date_bought": "Feb 02, 2026", "strike": 16.75, "qty": 500, "mark": 6.480000019073486}, {"ticker": "JD", "date_bought": "Aug 21, 2026", "strike": 32.5, "qty": 600, "mark": 27.0}];
 
         function formatCurrency(val) {
@@ -321,25 +321,30 @@
 
         document.getElementById('summary-cards').innerHTML = `
             <div class="card">
-                <div class="card-label">Active Positions</div>
-                <div class="card-val">${openPositions.length} <span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">(${totContracts} contracts)</span></div>
+                <div class="card-label">Active Monthly Positions</div>
+                <div class="card-val">${openPositions.length} <span style="font-size: 0.95rem; color: var(--text-muted); font-weight: 500;">(${totContracts} contracts)</span></div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">active 30-day option cycle</div>
             </div>
             <div class="card">
-                <div class="card-label">Capital Required</div>
+                <div class="card-label">Monthly Capital Allocated</div>
                 <div class="card-val blue">${formatCurrency(totCap)}</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">cash collateral & covered stock</div>
             </div>
             <div class="card">
-                <div class="card-label">Net Premium Collected</div>
+                <div class="card-label">Monthly Premium Collected</div>
                 <div class="card-val green">${formatCurrency(totPrem)}</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">net cash collected this cycle</div>
             </div>
             <div class="card">
-                <div class="card-label">Return on Capital</div>
-                <div class="card-val green">${avgReturn}%</div>
+                <div class="card-label">Monthly Return on Capital</div>
+                <div class="card-val green">${avgReturn}% <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-muted);">/ mo</span></div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">~${(avgReturn * 12).toFixed(1)}% annualized pace</div>
             </div>
             ${uncoveredLongs.length > 0 ? `
             <div class="card">
                 <div class="card-label">Uncovered Stock</div>
-                <div class="card-val">${uncoveredLongs.length} tickers <span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">(${totalUncoveredShares} shs)</span></div>
+                <div class="card-val">${uncoveredLongs.length} tickers <span style="font-size: 0.95rem; color: var(--text-muted); font-weight: 500;">(${totalUncoveredShares} shs)</span></div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">assigned shares awaiting CCs</div>
             </div>` : ''}
         `;
 
@@ -411,7 +416,7 @@
             }).join('');
 
             totalRow.innerHTML = `
-                <td colspan="8">Total (${filtered.length} Positions)</td>
+                <td colspan="8">Monthly Total (${filtered.length} Positions)</td>
                 <td class="text-right" style="color: #64b5f6;">${formatCurrency(subCap)}</td>
                 <td class="text-right positive">${formatCurrency(subPrem)}</td>
                 <td class="text-right positive">${subCap > 0 ? ((subPrem / subCap) * 100).toFixed(2) + '%' : '-'}</td>
