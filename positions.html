@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Wheel Strategy — Open Positions</title>
+    <title>Wheel Strategy — Options Positions</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -79,7 +79,7 @@
         }
         .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
             gap: 15px;
             margin-bottom: 30px;
         }
@@ -105,6 +105,7 @@
         }
         .card-val.green { color: var(--accent-green); }
         .card-val.blue { color: #64b5f6; }
+        .card-val.negative { color: var(--accent-red); }
         .table-container {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -228,14 +229,14 @@
         <header>
             <div class="header-title">
                 <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                    <h1>📋 Wheel Strategy — Open Positions</h1>
+                    <h1>📋 Wheel Strategy — Options Positions</h1>
                     <span style="background: rgba(0, 230, 118, 0.12); color: var(--accent-green); border: 1px solid rgba(0, 230, 118, 0.3); padding: 4px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.3px;">🗓️ September 2026</span>
                 </div>
-                <div class="subtitle">Live snapshot of active monthly options contracts (cash-secured puts & covered calls)</div>
+                <div class="subtitle">Live snapshot of active & closed monthly options contracts (cash-secured puts & covered calls)</div>
             </div>
             <div class="last-updated-badge">
                 <span class="status-dot"></span>
-                <span>Updated: Sep 26, 2026 08:34 PDT</span>
+                <span>Updated: Sep 26, 2026 12:32 PDT</span>
             </div>
         </header>
 
@@ -247,9 +248,9 @@
             <div class="table-header-wrap">
                 <h2>⚡ Open Option Positions</h2>
                 <div class="filter-group">
-                    <button class="filter-btn active" onclick="setFilter('ALL')">All</button>
-                    <button class="filter-btn" onclick="setFilter('CSP')">CSPs</button>
-                    <button class="filter-btn" onclick="setFilter('CC')">Covered Calls</button>
+                    <button class="filter-btn open-filter-btn active" onclick="setOpenFilter('ALL')">All</button>
+                    <button class="filter-btn open-filter-btn" onclick="setOpenFilter('CSP')">CSPs</button>
+                    <button class="filter-btn open-filter-btn" onclick="setOpenFilter('CC')">Covered Calls</button>
                 </div>
             </div>
             <table>
@@ -275,6 +276,36 @@
             </table>
         </div>
 
+        <div class="table-container">
+            <div class="table-header-wrap">
+                <h2>✅ Closed Option Positions (September)</h2>
+                <div class="filter-group">
+                    <button class="filter-btn closed-filter-btn active" onclick="setClosedFilter('ALL')">All</button>
+                    <button class="filter-btn closed-filter-btn" onclick="setClosedFilter('CSP')">CSPs</button>
+                    <button class="filter-btn closed-filter-btn" onclick="setClosedFilter('CC')">Covered Calls</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date Closed</th>
+                        <th>Date Opened</th>
+                        <th>Strat</th>
+                        <th>Ticker</th>
+                        <th>Strike</th>
+                        <th>Expiration</th>
+                        <th class="text-right">Qty</th>
+                        <th>Status / Method</th>
+                        <th class="text-right">Realized Net P&L</th>
+                    </tr>
+                </thead>
+                <tbody id="closed-positions-body"></tbody>
+                <tfoot>
+                    <tr id="closed-positions-total" class="footer-total"></tr>
+                </tfoot>
+            </table>
+        </div>
+
         <footer>
             Wheel Strategy Portfolio Tracker • Auto-synced daily
         </footer>
@@ -282,6 +313,7 @@
 
     <script>
         const openPositions = [];
+        const closedPositions = [{"ticker": "LVS", "strategy": "CSP", "strike": "$45", "strike_val": 45.0, "expiration": "Sep 25, 2026", "qty": 2, "cap_req": 9000.0, "pnl": 274.67, "open_date": "Sep 25, 2026", "close_date": "Sep 25, 2026", "close_reason": "Expired"}, {"ticker": "PYPL", "strategy": "CSP", "strike": "$53", "strike_val": 53.0, "expiration": "Sep 25, 2026", "qty": 4, "cap_req": 21200.0, "pnl": 773.33, "open_date": "Sep 25, 2026", "close_date": "Sep 25, 2026", "close_reason": "Expired"}, {"ticker": "WYNN", "strategy": "CSP", "strike": "$90", "strike_val": 90.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 9000.0, "pnl": 193.34, "open_date": "Sep 25, 2026", "close_date": "Sep 25, 2026", "close_reason": "Expired"}, {"ticker": "CCL", "strategy": "CSP", "strike": "$24", "strike_val": 24.0, "expiration": "Sep 25, 2026", "qty": 4, "cap_req": 9600.0, "pnl": 349.35, "open_date": "Sep 25, 2026", "close_date": "Sep 25, 2026", "close_reason": "Expired"}, {"ticker": "UBER", "strategy": "CSP", "strike": "$70", "strike_val": 70.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 7000.0, "pnl": 152.34, "open_date": "Sep 25, 2026", "close_date": "Sep 25, 2026", "close_reason": "Expired"}, {"ticker": "CMCSA", "strategy": "CSP", "strike": "$25", "strike_val": 25.0, "expiration": "Sep 25, 2026", "qty": 4, "cap_req": 10000.0, "pnl": 365.35, "open_date": "Sep 25, 2026", "close_date": "Sep 25, 2026", "close_reason": "Expired"}, {"ticker": "OKLO", "strategy": "CC", "strike": "$40", "strike_val": 40.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 4000.0, "pnl": 193.33, "open_date": "Sep 24, 2026", "close_date": "Sep 24, 2026", "close_reason": "Bought to Close"}, {"ticker": "DKS", "strategy": "CSP", "strike": "$125", "strike_val": 125.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 12500.0, "pnl": 170.33, "open_date": "Sep 24, 2026", "close_date": "Sep 24, 2026", "close_reason": "Bought to Close"}, {"ticker": "OKLO", "strategy": "CSP", "strike": "$38", "strike_val": 38.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 3800.0, "pnl": 214.33, "open_date": "Sep 21, 2026", "close_date": "Sep 21, 2026", "close_reason": "Bought to Close"}, {"ticker": "OKLO", "strategy": "CSP", "strike": "$36", "strike_val": 36.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 3600.0, "pnl": 139.33, "open_date": "Sep 21, 2026", "close_date": "Sep 21, 2026", "close_reason": "Bought to Close"}, {"ticker": "RIVN", "strategy": "CSP", "strike": "$14", "strike_val": 14.0, "expiration": "Sep 25, 2026", "qty": 5, "cap_req": 7000.0, "pnl": 91.61, "open_date": "Sep 18, 2026", "close_date": "Sep 18, 2026", "close_reason": "Bought to Close"}, {"ticker": "LULU", "strategy": "CSP", "strike": "$95", "strike_val": 95.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 9500.0, "pnl": 147.33, "open_date": "Sep 18, 2026", "close_date": "Sep 18, 2026", "close_reason": "Bought to Close"}, {"ticker": "COIN", "strategy": "CSP", "strike": "$175", "strike_val": 175.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 17500.0, "pnl": 540.66, "open_date": "Sep 18, 2026", "close_date": "Sep 18, 2026", "close_reason": "Bought to Close"}, {"ticker": "OKLO", "strategy": "CC", "strike": "$45", "strike_val": 45.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 4500.0, "pnl": 38.33, "open_date": "Sep 18, 2026", "close_date": "Sep 18, 2026", "close_reason": "Bought to Close"}, {"ticker": "FISV", "strategy": "CC", "strike": "$54", "strike_val": 54.0, "expiration": "Sep 25, 2026", "qty": 2, "cap_req": 10800.0, "pnl": 66.64, "open_date": "Sep 18, 2026", "close_date": "Sep 18, 2026", "close_reason": "Bought to Close"}, {"ticker": "COIN", "strategy": "CSP", "strike": "$175", "strike_val": 175.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 17500.0, "pnl": 575.66, "open_date": "Sep 14, 2026", "close_date": "Sep 14, 2026", "close_reason": "Bought to Close"}, {"ticker": "QCOM", "strategy": "CSP", "strike": "$160", "strike_val": 160.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 16000.0, "pnl": 493.31, "open_date": "Sep 11, 2026", "close_date": "Sep 11, 2026", "close_reason": "Bought to Close"}, {"ticker": "OKLO", "strategy": "CC", "strike": "$41", "strike_val": 41.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 4100.0, "pnl": 231.33, "open_date": "Sep 11, 2026", "close_date": "Sep 11, 2026", "close_reason": "Bought to Close"}, {"ticker": "OKLO", "strategy": "CC", "strike": "$50", "strike_val": 50.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 5000.0, "pnl": 107.33, "open_date": "Sep 11, 2026", "close_date": "Sep 11, 2026", "close_reason": "Bought to Close"}, {"ticker": "UBER", "strategy": "CC", "strike": "$81", "strike_val": 81.0, "expiration": "Sep 25, 2026", "qty": 1, "cap_req": 8100.0, "pnl": 87.33, "open_date": "Sep 09, 2026", "close_date": "Sep 09, 2026", "close_reason": "Bought to Close"}, {"ticker": "FISV", "strategy": "CC", "strike": "$54", "strike_val": 54.0, "expiration": "Sep 25, 2026", "qty": 2, "cap_req": 10800.0, "pnl": 312.64, "open_date": "Sep 09, 2026", "close_date": "Sep 09, 2026", "close_reason": "Bought to Close"}];
 
         function formatCurrency(val) {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0, minimumFractionDigits: 0 }).format(Math.round(val));
@@ -300,6 +332,15 @@
         });
         const avgReturn = totCap > 0 ? (totPrem / totCap * 100).toFixed(2) : '0.00';
 
+        let totClosedContracts = 0, totClosedPnl = 0;
+        closedPositions.forEach(p => {
+            totClosedContracts += (p.qty || 1);
+            totClosedPnl += (p.pnl || 0);
+        });
+
+        const closedPnlStr = (totClosedPnl >= 0 ? '+' : '') + formatPrice(totClosedPnl);
+        const closedClass = totClosedPnl >= 0 ? 'green' : 'negative';
+
         document.getElementById('summary-cards').innerHTML = `
             <div class="card">
                 <div class="card-label">Active Positions</div>
@@ -312,9 +353,14 @@
                 <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">cash collateral & covered stock</div>
             </div>
             <div class="card">
-                <div class="card-label">Premium Collected</div>
+                <div class="card-label">Open Premium</div>
                 <div class="card-val green">${formatCurrency(totPrem)}</div>
-                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">net cash collected this cycle</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">active positions cash collected</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Closed This Month</div>
+                <div class="card-val ${closedClass}">${closedPnlStr}</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;">${closedPositions.length} closed (${totClosedContracts} contracts)</div>
             </div>
             <div class="card">
                 <div class="card-label">Return on Capital</div>
@@ -323,10 +369,10 @@
             </div>
         `;
 
-        let currentFilter = 'ALL';
-        function setFilter(filter) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-btn').forEach(btn => {
+        let currentOpenFilter = 'ALL';
+        function setOpenFilter(filter) {
+            currentOpenFilter = filter;
+            document.querySelectorAll('.open-filter-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.textContent.includes(filter === 'ALL' ? 'All' : filter === 'CSP' ? 'CSP' : 'Covered'));
             });
             renderPositions();
@@ -335,7 +381,7 @@
         function renderPositions() {
             const tbody = document.getElementById('open-positions-body');
             const totalRow = document.getElementById('open-positions-total');
-            const filtered = openPositions.filter(p => currentFilter === 'ALL' || p.strategy === currentFilter);
+            const filtered = openPositions.filter(p => currentOpenFilter === 'ALL' || p.strategy === currentOpenFilter);
 
             if (filtered.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; color: var(--text-muted); padding: 30px;">No open positions found</td></tr>';
@@ -398,7 +444,60 @@
             `;
         }
 
+        let currentClosedFilter = 'ALL';
+        function setClosedFilter(filter) {
+            currentClosedFilter = filter;
+            document.querySelectorAll('.closed-filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.includes(filter === 'ALL' ? 'All' : filter === 'CSP' ? 'CSP' : 'Covered'));
+            });
+            renderClosedPositions();
+        }
+
+        function renderClosedPositions() {
+            const tbody = document.getElementById('closed-positions-body');
+            const totalRow = document.getElementById('closed-positions-total');
+            const filtered = closedPositions.filter(p => currentClosedFilter === 'ALL' || p.strategy === currentClosedFilter);
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 30px;">No closed option positions for this month yet</td></tr>';
+                totalRow.innerHTML = '';
+                return;
+            }
+
+            let subQty = 0, subPnl = 0;
+            tbody.innerHTML = filtered.map(p => {
+                subQty += (p.qty || 1);
+                subPnl += (p.pnl || 0);
+                const pnlClass = p.pnl >= 0 ? 'positive' : 'negative';
+                const pnlStr = (p.pnl >= 0 ? '+' : '') + formatPrice(p.pnl);
+
+                return `
+                    <tr>
+                        <td style="color: #fff; font-weight: 600;">${p.close_date}</td>
+                        <td style="color: var(--text-muted);">${p.open_date}</td>
+                        <td><span class="badge ${p.strategy === 'CSP' ? 'badge-csp' : 'badge-cc'}">${p.strategy}</span></td>
+                        <td><strong style="color: #fff; font-size: 1rem;">${p.ticker}</strong></td>
+                        <td style="font-weight: 700; color: #fff;">${p.strike}</td>
+                        <td>${p.expiration}</td>
+                        <td class="text-right" style="font-weight: 700;">${p.qty}</td>
+                        <td><span style="background: rgba(255,255,255,0.06); padding: 3px 8px; border-radius: 6px; font-size: 0.78rem; color: var(--text-muted);">${p.close_reason}</span></td>
+                        <td class="text-right ${pnlClass}" style="font-weight: 700; font-size: 0.95rem;">${pnlStr}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const totPnlClass = subPnl >= 0 ? 'positive' : 'negative';
+            const totPnlStr = (subPnl >= 0 ? '+' : '') + formatPrice(subPnl);
+            totalRow.innerHTML = `
+                <td colspan="6">Total (${filtered.length} Closed Positions)</td>
+                <td class="text-right" style="font-weight: 700; color: #fff;">${subQty}</td>
+                <td></td>
+                <td class="text-right ${totPnlClass}" style="font-size: 1.05rem; font-weight: 800;">${totPnlStr}</td>
+            `;
+        }
+
         renderPositions();
+        renderClosedPositions();
     </script>
 </body>
 </html>
