@@ -230,13 +230,13 @@
             <div class="header-title">
                 <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                     <h1>📋 Wheel Strategy — Options Positions</h1>
-                    <span style="background: rgba(0, 230, 118, 0.12); color: var(--accent-green); border: 1px solid rgba(0, 230, 118, 0.3); padding: 4px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.3px;">🗓️ September 2026</span>
+                    <span style="background: rgba(0, 230, 118, 0.12); color: var(--accent-green); border: 1px solid rgba(0, 230, 118, 0.3); padding: 4px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.3px;">🗓️ October 2026</span>
                 </div>
                 <div class="subtitle">Live snapshot of active & closed monthly options contracts (cash-secured puts & covered calls)</div>
             </div>
             <div class="last-updated-badge">
                 <span class="status-dot"></span>
-                <span>Updated: Sep 30, 2026 18:47 PDT</span>
+                <span>Updated: Oct 01, 2026 04:19 PDT</span>
             </div>
         </header>
 
@@ -278,7 +278,7 @@
 
         <div class="table-container">
             <div class="table-header-wrap">
-                <h2>✅ Closed Option Positions (September)</h2>
+                <h2>✅ Closed Option Positions (October)</h2>
                 <div class="filter-group">
                     <button class="filter-btn closed-filter-btn active" onclick="setClosedFilter('ALL')">All</button>
                     <button class="filter-btn closed-filter-btn" onclick="setClosedFilter('CSP')">CSPs</button>
@@ -312,7 +312,7 @@
     </div>
 
     <script>
-        const openPositions = [{"ticker": "PYPL", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 30, 2026", "dte": 30, "qty": 4, "cap_req": 22000.0, "premium": 1237.32, "open_date": "Sep 28, 2026", "current_price": 52.52}, {"ticker": "COIN", "strategy": "CSP", "strike": "$175", "strike_val": 175.0, "expiration": "Oct 30, 2026", "dte": 30, "qty": 1, "cap_req": 17500.0, "premium": 762.0, "open_date": "Sep 29, 2026", "current_price": 186.35}, {"ticker": "LULU", "strategy": "CSP", "strike": "$95", "strike_val": 95.0, "expiration": "Oct 30, 2026", "dte": 30, "qty": 1, "cap_req": 9500.0, "premium": 320.0, "open_date": "Sep 29, 2026", "current_price": 96.18}, {"ticker": "UBER", "strategy": "CC", "strike": "$70", "strike_val": 70.0, "expiration": "Oct 30, 2026", "dte": 30, "qty": 1, "cap_req": 7000.0, "premium": 288.0, "open_date": "Sep 29, 2026", "current_price": 68.515}, {"ticker": "OKLO", "strategy": "CC", "strike": "$39", "strike_val": 39.0, "expiration": "Oct 30, 2026", "dte": 30, "qty": 1, "cap_req": 3900.0, "premium": 269.0, "open_date": "Sep 29, 2026", "current_price": 37.02}, {"ticker": "CCL", "strategy": "CC", "strike": "$24", "strike_val": 24.0, "expiration": "Oct 30, 2026", "dte": 30, "qty": 4, "cap_req": 9600.0, "premium": 266.35, "open_date": "Sep 28, 2026", "current_price": 24.58}, {"ticker": "O", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 16, 2026", "dte": 16, "qty": 3, "cap_req": 16500.0, "premium": 238.01, "open_date": "Sep 28, 2026", "current_price": 54.3}, {"ticker": "RIVN", "strategy": "CSP", "strike": "$13.5", "strike_val": 13.5, "expiration": "Oct 30, 2026", "dte": 30, "qty": 5, "cap_req": 6750.0, "premium": 211.68, "open_date": "Sep 28, 2026", "current_price": 14.96}, {"ticker": "QCOM", "strategy": "CSP", "strike": "$160", "strike_val": 160.0, "expiration": "Oct 30, 2026", "dte": 30, "qty": 1, "cap_req": 16000.0, "premium": 185.0, "open_date": "Sep 29, 2026", "current_price": 184.11}];
+        const openPositions = [{"ticker": "PYPL", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 30, 2026", "dte": 29, "qty": 4, "cap_req": 22000.0, "premium": 1237.32, "open_date": "Sep 28, 2026", "current_price": 52.52}, {"ticker": "COIN", "strategy": "CSP", "strike": "$175", "strike_val": 175.0, "expiration": "Oct 30, 2026", "dte": 29, "qty": 1, "cap_req": 17500.0, "premium": 761.32, "open_date": "Sep 29, 2026", "current_price": 186.35}, {"ticker": "LULU", "strategy": "CSP", "strike": "$95", "strike_val": 95.0, "expiration": "Oct 30, 2026", "dte": 29, "qty": 1, "cap_req": 9500.0, "premium": 319.34, "open_date": "Sep 29, 2026", "current_price": 96.18}, {"ticker": "UBER", "strategy": "CC", "strike": "$70", "strike_val": 70.0, "expiration": "Oct 30, 2026", "dte": 29, "qty": 1, "cap_req": 7000.0, "premium": 287.34, "open_date": "Sep 29, 2026", "current_price": 68.515}, {"ticker": "OKLO", "strategy": "CC", "strike": "$39", "strike_val": 39.0, "expiration": "Oct 30, 2026", "dte": 29, "qty": 1, "cap_req": 3900.0, "premium": 268.34, "open_date": "Sep 29, 2026", "current_price": 37.02}, {"ticker": "CCL", "strategy": "CC", "strike": "$24", "strike_val": 24.0, "expiration": "Oct 30, 2026", "dte": 29, "qty": 4, "cap_req": 9600.0, "premium": 266.35, "open_date": "Sep 28, 2026", "current_price": 24.58}, {"ticker": "O", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 16, 2026", "dte": 15, "qty": 3, "cap_req": 16500.0, "premium": 238.01, "open_date": "Sep 28, 2026", "current_price": 54.3}, {"ticker": "RIVN", "strategy": "CSP", "strike": "$13.5", "strike_val": 13.5, "expiration": "Oct 30, 2026", "dte": 29, "qty": 5, "cap_req": 6750.0, "premium": 211.68, "open_date": "Sep 28, 2026", "current_price": 14.96}, {"ticker": "QCOM", "strategy": "CSP", "strike": "$160", "strike_val": 160.0, "expiration": "Oct 30, 2026", "dte": 29, "qty": 1, "cap_req": 16000.0, "premium": 184.34, "open_date": "Sep 29, 2026", "current_price": 184.11}];
         const closedPositions = [];
 
         function formatCurrency(val) {
