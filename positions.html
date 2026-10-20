@@ -236,7 +236,7 @@
             </div>
             <div class="last-updated-badge">
                 <span class="status-dot"></span>
-                <span>Updated: Oct 19, 2026 10:19 PDT</span>
+                <span>Updated: Oct 19, 2026 18:16 PDT</span>
             </div>
         </header>
 
@@ -267,6 +267,7 @@
                         <th class="text-right">Monthly Capital Req</th>
                         <th class="text-right">Monthly Premium</th>
                         <th class="text-right">Monthly Return</th>
+                        <th style="text-align: center;" title="Can the option be bought back for 80% of the credit? Target ask = 20% of credit received per share.">80% Close</th>
                     </tr>
                 </thead>
                 <tbody id="open-positions-body"></tbody>
@@ -312,8 +313,8 @@
     </div>
 
     <script>
-        const openPositions = [{"ticker": "PYPL", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 4, "cap_req": 22000.0, "premium": 1237.32, "open_date": "Sep 28, 2026", "current_price": 56.35}, {"ticker": "COIN", "strategy": "CSP", "strike": "$175", "strike_val": 175.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 1, "cap_req": 17500.0, "premium": 761.32, "open_date": "Sep 29, 2026", "current_price": 170.29}, {"ticker": "CMCSA", "strategy": "CSP", "strike": "$21", "strike_val": 21.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 5, "cap_req": 10500.0, "premium": 391.68, "open_date": "Oct 02, 2026", "current_price": 22.025}, {"ticker": "LULU", "strategy": "CSP", "strike": "$95", "strike_val": 95.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 1, "cap_req": 9500.0, "premium": 319.34, "open_date": "Sep 29, 2026", "current_price": 96.76}, {"ticker": "UBER", "strategy": "CC", "strike": "$70", "strike_val": 70.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 1, "cap_req": 7000.0, "premium": 287.34, "open_date": "Sep 29, 2026", "current_price": 70.245}, {"ticker": "CCL", "strategy": "CC", "strike": "$24", "strike_val": 24.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 4, "cap_req": 9600.0, "premium": 266.35, "open_date": "Sep 28, 2026", "current_price": 26.245}, {"ticker": "RIVN", "strategy": "CSP", "strike": "$13.5", "strike_val": 13.5, "expiration": "Oct 30, 2026", "dte": 11, "qty": 5, "cap_req": 6750.0, "premium": 211.68, "open_date": "Sep 28, 2026", "current_price": 12.29}, {"ticker": "QCOM", "strategy": "CSP", "strike": "$160", "strike_val": 160.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 1, "cap_req": 16000.0, "premium": 184.34, "open_date": "Sep 29, 2026", "current_price": 173.78}, {"ticker": "FISV", "strategy": "CC", "strike": "$54", "strike_val": 54.0, "expiration": "Nov 13, 2026", "dte": 25, "qty": 2, "cap_req": 10800.0, "premium": 138.67, "open_date": "Oct 15, 2026", "current_price": 47.32}, {"ticker": "UBER", "strategy": "CC", "strike": "$77", "strike_val": 77.0, "expiration": "Nov 06, 2026", "dte": 18, "qty": 1, "cap_req": 7700.0, "premium": 131.34, "open_date": "Oct 09, 2026", "current_price": 70.245}];
-        const closedPositions = [{"ticker": "OKLO", "strategy": "CC", "strike": "$39", "strike_val": 39.0, "expiration": "Oct 30, 2026", "qty": 1, "cap_req": 3900.0, "pnl": 259.33, "open_date": "Oct 15, 2026", "close_date": "Oct 15, 2026", "close_reason": "Bought to Close"}, {"ticker": "O", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 16, 2026", "qty": 3, "cap_req": 16500.0, "pnl": 213.97, "open_date": "Oct 15, 2026", "close_date": "Oct 15, 2026", "close_reason": "Bought to Close"}];
+        const openPositions = [{"ticker": "PYPL", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 4, "cap_req": 22000.0, "premium": 1237.32, "open_date": "Sep 28, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 56.5, "credit_per_share": 3.0933, "target_ask": 0.62, "opt_bid": 1.1, "opt_ask": 1.64, "est_profit_pct": 47.0, "can_close_target": false}, {"ticker": "COIN", "strategy": "CSP", "strike": "$175", "strike_val": 175.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 1, "cap_req": 17500.0, "premium": 761.32, "open_date": "Sep 29, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 168.225, "credit_per_share": 7.6132, "target_ask": 1.52, "opt_bid": 12.55, "opt_ask": 13.2, "est_profit_pct": -73.4, "can_close_target": false}, {"ticker": "CMCSA", "strategy": "CSP", "strike": "$21", "strike_val": 21.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 5, "cap_req": 10500.0, "premium": 391.68, "open_date": "Oct 02, 2026", "account_id": "b413eac4-629e-4221-8567-130a79921c8a", "account": "Taxable", "current_price": 21.9, "credit_per_share": 0.7834, "target_ask": 0.16, "opt_bid": 0.26, "opt_ask": 0.51, "est_profit_pct": 34.9, "can_close_target": false}, {"ticker": "LULU", "strategy": "CSP", "strike": "$95", "strike_val": 95.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 1, "cap_req": 9500.0, "premium": 319.34, "open_date": "Sep 29, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 97.7, "credit_per_share": 3.1934, "target_ask": 0.64, "opt_bid": 1.49, "opt_ask": 1.7, "est_profit_pct": 46.8, "can_close_target": false}, {"ticker": "UBER", "strategy": "CC", "strike": "$70", "strike_val": 70.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 1, "cap_req": 7000.0, "premium": 287.34, "open_date": "Sep 29, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 69.98, "credit_per_share": 2.8734, "target_ask": 0.57, "opt_bid": 1.65, "opt_ask": 1.76, "est_profit_pct": 38.7, "can_close_target": false}, {"ticker": "CCL", "strategy": "CC", "strike": "$24", "strike_val": 24.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 4, "cap_req": 9600.0, "premium": 266.35, "open_date": "Sep 28, 2026", "account_id": "b413eac4-629e-4221-8567-130a79921c8a", "account": "Taxable", "current_price": 26.45, "credit_per_share": 0.6659, "target_ask": 0.13, "opt_bid": 2.55, "opt_ask": 2.88, "est_profit_pct": -332.5, "can_close_target": false}, {"ticker": "RIVN", "strategy": "CSP", "strike": "$13.5", "strike_val": 13.5, "expiration": "Oct 30, 2026", "dte": 11, "qty": 5, "cap_req": 6750.0, "premium": 211.68, "open_date": "Sep 28, 2026", "account_id": "787a86b7-ba40-49a7-8e9a-00c83c130b0b", "account": "Roth IRA", "current_price": 12.34, "credit_per_share": 0.4234, "target_ask": 0.08, "opt_bid": 1.36, "opt_ask": 1.55, "est_profit_pct": -266.1, "can_close_target": false}, {"ticker": "QCOM", "strategy": "CSP", "strike": "$160", "strike_val": 160.0, "expiration": "Oct 30, 2026", "dte": 11, "qty": 1, "cap_req": 16000.0, "premium": 184.34, "open_date": "Sep 29, 2026", "account_id": "b413eac4-629e-4221-8567-130a79921c8a", "account": "Taxable", "current_price": 173.455, "credit_per_share": 1.8434, "target_ask": 0.37, "opt_bid": 1.14, "opt_ask": 1.52, "est_profit_pct": 17.5, "can_close_target": false}, {"ticker": "FISV", "strategy": "CC", "strike": "$54", "strike_val": 54.0, "expiration": "Nov 13, 2026", "dte": 25, "qty": 2, "cap_req": 10800.0, "premium": 138.67, "open_date": "Oct 15, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 47.7, "credit_per_share": 0.6933, "target_ask": 0.14, "opt_bid": 0.2, "opt_ask": 1.3, "est_profit_pct": -87.5, "can_close_target": false}, {"ticker": "UBER", "strategy": "CC", "strike": "$77", "strike_val": 77.0, "expiration": "Nov 06, 2026", "dte": 18, "qty": 1, "cap_req": 7700.0, "premium": 131.34, "open_date": "Oct 09, 2026", "account_id": "b413eac4-629e-4221-8567-130a79921c8a", "account": "Taxable", "current_price": 69.98, "credit_per_share": 1.3134, "target_ask": 0.26, "opt_bid": 0.79, "opt_ask": 0.95, "est_profit_pct": 27.7, "can_close_target": false}];
+        const closedPositions = [{"ticker": "O", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 16, 2026", "qty": 3, "cap_req": 16500.0, "pnl": 213.97, "open_date": "Oct 15, 2026", "close_date": "Oct 15, 2026", "close_reason": "Bought to Close"}, {"ticker": "OKLO", "strategy": "CC", "strike": "$39", "strike_val": 39.0, "expiration": "Oct 30, 2026", "qty": 1, "cap_req": 3900.0, "pnl": 259.33, "open_date": "Oct 15, 2026", "close_date": "Oct 15, 2026", "close_reason": "Bought to Close"}];
 
         function formatCurrency(val) {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0, minimumFractionDigits: 0 }).format(Math.round(val));
@@ -378,13 +379,28 @@
             renderPositions();
         }
 
+        // 80% profit-take cell: compares current option ask vs. target ask (20% of credit)
+        function render80Cell(p) {
+            if (p.target_ask === undefined || p.target_ask === null) return '<span style="color: var(--text-muted);">-</span>';
+            const tgt = '$' + Number(p.target_ask).toFixed(2);
+            if (p.opt_ask === undefined || p.opt_ask === null || p.opt_ask <= 0) {
+                return `<div style="color: var(--text-muted); font-size: 0.75rem;">No quote</div><div style="font-size: 0.7rem; color: var(--text-muted);">Tgt ask ≤ ${tgt}</div>`;
+            }
+            const ask = '$' + Number(p.opt_ask).toFixed(2);
+            const pct = (p.est_profit_pct !== null && p.est_profit_pct !== undefined) ? `${p.est_profit_pct.toFixed(0)}%` : '-';
+            if (p.can_close_target) {
+                return `<span class="badge" style="background: rgba(0,230,118,0.15); color: var(--accent-green); font-size: 0.7rem; font-weight: 800;">✓ CLOSE (${pct})</span><div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 3px;">Ask ${ask} ≤ ${tgt}</div>`;
+            }
+            return `<div style="font-size: 0.8rem; font-weight: 700; color: #fff;">${pct}</div><div style="font-size: 0.7rem; color: var(--text-muted);">Ask ${ask} / Tgt ${tgt}</div>`;
+        }
+
         function renderPositions() {
             const tbody = document.getElementById('open-positions-body');
             const totalRow = document.getElementById('open-positions-total');
             const filtered = openPositions.filter(p => currentOpenFilter === 'ALL' || p.strategy === currentOpenFilter);
 
             if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; color: var(--text-muted); padding: 30px;">No open positions found</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="12" style="text-align: center; color: var(--text-muted); padding: 30px;">No open positions found</td></tr>';
                 totalRow.innerHTML = '';
                 return;
             }
@@ -432,15 +448,18 @@
                         <td class="text-right" style="color: var(--text-muted);">${formatCurrency(p.cap_req)}</td>
                         <td class="text-right positive" style="font-weight: 700;">${formatCurrency(p.premium)}</td>
                         <td class="text-right positive" style="font-weight: 700;">${retPct}</td>
+                        <td style="text-align: center; white-space: nowrap;">${render80Cell(p)}</td>
                     </tr>
                 `;
             }).join('');
 
+            const readyCount = filtered.filter(p => p.can_close_target).length;
             totalRow.innerHTML = `
                 <td colspan="8">Total (${filtered.length} Positions)</td>
                 <td class="text-right" style="color: #64b5f6;">${formatCurrency(subCap)}</td>
                 <td class="text-right positive">${formatCurrency(subPrem)}</td>
                 <td class="text-right positive">${subCap > 0 ? ((subPrem / subCap) * 100).toFixed(2) + '%' : '-'}</td>
+                <td style="text-align: center; color: ${readyCount > 0 ? 'var(--accent-green)' : 'var(--text-muted)'};">${readyCount} ready</td>
             `;
         }
 
