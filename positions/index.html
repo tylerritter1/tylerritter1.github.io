@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="robots" content="noindex, nofollow">
     <title>Wheel Strategy — Options Positions</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -19,6 +19,8 @@
             --text-muted: #8b92a5;
         }
         * { box-sizing: border-box; }
+        html { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+        body { overflow-x: clip; max-width: 100vw; }
         body {
             font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-color);
@@ -217,10 +219,59 @@
         }
         @media (max-width: 600px) {
             body { padding: 15px 10px; }
-            .cards { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .card { padding: 14px; }
-            .card-val { font-size: 1.3rem; }
-            .table-container { padding: 15px 12px; }
+            .header-title h1 { font-size: 1.3rem; }
+            header { margin-bottom: 18px; padding-bottom: 14px; }
+            .cards { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+            .card { padding: 12px; }
+            .card-val { font-size: 1.2rem; }
+            .table-container { padding: 14px 10px; overflow-x: visible; margin-bottom: 20px; }
+            .table-header-wrap { gap: 10px; margin-bottom: 14px; }
+            h2 { font-size: 1.05rem; }
+            .filter-btn { padding: 5px 10px; }
+        }
+        /* ── Mobile: rows become cards so no horizontal scrolling ── */
+        @media (max-width: 700px) {
+            .resp-table thead { display: none; }
+            .resp-table, .resp-table tbody, .resp-table tfoot { display: block; width: 100%; }
+            .resp-table tr {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 10px 12px;
+                padding: 12px;
+                margin-bottom: 10px;
+                border: 1px solid var(--border-color);
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.02);
+            }
+            .resp-table td {
+                display: block;
+                padding: 0 !important;
+                border: none !important;
+                white-space: normal !important;
+                text-align: left !important;
+                min-width: 0;
+                font-size: 0.88rem;
+            }
+            .resp-table td::before {
+                content: attr(data-label);
+                display: block;
+                font-size: 0.62rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+                color: var(--text-muted);
+                margin-bottom: 2px;
+            }
+            .resp-table td:not([data-label])::before, .resp-table td[data-label=""]::before { display: none; }
+            .resp-table td:empty { display: none; }
+            .resp-table td[colspan] { grid-column: 1 / -1; }
+            .resp-table td.cell-strat { order: -2; align-self: center; }
+            .resp-table td.cell-ticker { order: -1; align-self: center; }
+            .resp-table td.cell-hero { order: -1; text-align: right !important; font-size: 1rem !important; }
+            .resp-table td.cell-wide { grid-column: span 2; }
+            .resp-table tr:hover td { background: none; }
+            .resp-table tfoot tr { border-color: rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.05); }
+            .resp-table tfoot td { padding: 0 !important; }
         }
     </style>
 </head>
@@ -236,7 +287,7 @@
             </div>
             <div class="last-updated-badge">
                 <span class="status-dot"></span>
-                <span>Updated: Oct 29, 2026 04:15 PDT</span>
+                <span>Updated: Oct 29, 2026 14:31 PDT</span>
             </div>
         </header>
 
@@ -253,7 +304,7 @@
                     <button class="filter-btn open-filter-btn" onclick="setOpenFilter('CC')">Covered Calls</button>
                 </div>
             </div>
-            <table>
+            <table class="resp-table">
                 <thead>
                     <tr>
                         <th>Strat</th>
@@ -285,7 +336,7 @@
                     <button class="filter-btn closed-filter-btn" onclick="setClosedFilter('CC')">Covered Calls</button>
                 </div>
             </div>
-            <table>
+            <table class="resp-table">
                 <thead>
                     <tr>
                         <th>Date Closed</th>
@@ -312,8 +363,8 @@
     </div>
 
     <script>
-        const openPositions = [{"ticker": "PYPL", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 4, "cap_req": 22000.0, "premium": 1237.32, "open_date": "Sep 28, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 56.54, "credit_per_share": 3.0933, "target_ask": 0.62, "opt_bid": null, "opt_ask": null, "est_profit_pct": null, "can_close_target": false}, {"ticker": "COIN", "strategy": "CSP", "strike": "$175", "strike_val": 175.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 1, "cap_req": 17500.0, "premium": 761.32, "open_date": "Sep 29, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 162.43, "credit_per_share": 7.6132, "target_ask": 1.52, "opt_bid": 14.4, "opt_ask": 15.4, "est_profit_pct": -102.3, "can_close_target": false}, {"ticker": "LULU", "strategy": "CSP", "strike": "$95", "strike_val": 95.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 1, "cap_req": 9500.0, "premium": 319.34, "open_date": "Sep 29, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 105.24, "credit_per_share": 3.1934, "target_ask": 0.64, "opt_bid": 0.0, "opt_ask": 0.05, "est_profit_pct": 98.4, "can_close_target": true}, {"ticker": "UBER", "strategy": "CC", "strike": "$70", "strike_val": 70.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 1, "cap_req": 7000.0, "premium": 287.34, "open_date": "Sep 29, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 65.28, "credit_per_share": 2.8734, "target_ask": 0.57, "opt_bid": 0.01, "opt_ask": 0.02, "est_profit_pct": 99.3, "can_close_target": true}, {"ticker": "CCL", "strategy": "CC", "strike": "$24", "strike_val": 24.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 4, "cap_req": 9600.0, "premium": 266.35, "open_date": "Sep 28, 2026", "account_id": "b413eac4-629e-4221-8567-130a79921c8a", "account": "Taxable", "current_price": 28.075, "credit_per_share": 0.6659, "target_ask": 0.13, "opt_bid": 3.3, "opt_ask": 4.55, "est_profit_pct": -583.3, "can_close_target": false}, {"ticker": "CRWV", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 1, "cap_req": 5500.0, "premium": 217.34, "open_date": "Oct 19, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 61.23, "credit_per_share": 2.1734, "target_ask": 0.43, "opt_bid": 0.12, "opt_ask": 0.13, "est_profit_pct": 94.0, "can_close_target": true}, {"ticker": "RIVN", "strategy": "CSP", "strike": "$13.5", "strike_val": 13.5, "expiration": "Oct 30, 2026", "dte": 1, "qty": 5, "cap_req": 6750.0, "premium": 211.68, "open_date": "Sep 28, 2026", "account_id": "787a86b7-ba40-49a7-8e9a-00c83c130b0b", "account": "Roth IRA", "current_price": 11.67, "credit_per_share": 0.4234, "target_ask": 0.08, "opt_bid": 1.96, "opt_ask": 2.35, "est_profit_pct": -455.0, "can_close_target": false}, {"ticker": "QCOM", "strategy": "CSP", "strike": "$160", "strike_val": 160.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 1, "cap_req": 16000.0, "premium": 184.34, "open_date": "Sep 29, 2026", "account_id": "b413eac4-629e-4221-8567-130a79921c8a", "account": "Taxable", "current_price": 183.0, "credit_per_share": 1.8434, "target_ask": 0.37, "opt_bid": 0.03, "opt_ask": 0.04, "est_profit_pct": 97.8, "can_close_target": true}, {"ticker": "FISV", "strategy": "CC", "strike": "$54", "strike_val": 54.0, "expiration": "Nov 13, 2026", "dte": 15, "qty": 2, "cap_req": 10800.0, "premium": 138.67, "open_date": "Oct 15, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 47.85, "credit_per_share": 0.6933, "target_ask": 0.14, "opt_bid": 0.6, "opt_ask": 0.85, "est_profit_pct": -22.6, "can_close_target": false}, {"ticker": "UBER", "strategy": "CC", "strike": "$77", "strike_val": 77.0, "expiration": "Nov 06, 2026", "dte": 8, "qty": 1, "cap_req": 7700.0, "premium": 131.34, "open_date": "Oct 09, 2026", "account_id": "b413eac4-629e-4221-8567-130a79921c8a", "account": "Taxable", "current_price": 65.28, "credit_per_share": 1.3134, "target_ask": 0.26, "opt_bid": 0.16, "opt_ask": 0.23, "est_profit_pct": 82.5, "can_close_target": true}];
-        const closedPositions = [{"ticker": "CMCSA", "strategy": "CSP", "strike": "$21", "strike_val": 21.0, "expiration": "Oct 30, 2026", "qty": 5, "cap_req": 10500.0, "pnl": 361.61, "open_date": "Oct 22, 2026", "close_date": "Oct 22, 2026", "close_reason": "Bought to Close"}, {"ticker": "OKLO", "strategy": "CC", "strike": "$39", "strike_val": 39.0, "expiration": "Oct 30, 2026", "qty": 1, "cap_req": 3900.0, "pnl": 259.33, "open_date": "Oct 15, 2026", "close_date": "Oct 15, 2026", "close_reason": "Bought to Close"}, {"ticker": "O", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 16, 2026", "qty": 3, "cap_req": 16500.0, "pnl": 213.97, "open_date": "Oct 15, 2026", "close_date": "Oct 15, 2026", "close_reason": "Bought to Close"}];
+        const openPositions = [{"ticker": "PYPL", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 4, "cap_req": 22000.0, "premium": 1237.32, "open_date": "Sep 28, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 56.965, "credit_per_share": 3.0933, "target_ask": 0.62, "opt_bid": 0.02, "opt_ask": 0.12, "est_profit_pct": 96.1, "can_close_target": true}, {"ticker": "COIN", "strategy": "CSP", "strike": "$175", "strike_val": 175.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 1, "cap_req": 17500.0, "premium": 761.32, "open_date": "Sep 29, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 162.67, "credit_per_share": 7.6132, "target_ask": 1.52, "opt_bid": 14.9, "opt_ask": 16.5, "est_profit_pct": -116.7, "can_close_target": false}, {"ticker": "LULU", "strategy": "CSP", "strike": "$95", "strike_val": 95.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 1, "cap_req": 9500.0, "premium": 319.34, "open_date": "Sep 29, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 109.87, "credit_per_share": 3.1934, "target_ask": 0.64, "opt_bid": 0.0, "opt_ask": 0.05, "est_profit_pct": 98.4, "can_close_target": true}, {"ticker": "UBER", "strategy": "CC", "strike": "$70", "strike_val": 70.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 1, "cap_req": 7000.0, "premium": 287.34, "open_date": "Sep 29, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 65.27, "credit_per_share": 2.8734, "target_ask": 0.57, "opt_bid": 0.0, "opt_ask": 0.01, "est_profit_pct": 99.7, "can_close_target": true}, {"ticker": "CCL", "strategy": "CC", "strike": "$24", "strike_val": 24.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 4, "cap_req": 9600.0, "premium": 266.35, "open_date": "Sep 28, 2026", "account_id": "b413eac4-629e-4221-8567-130a79921c8a", "account": "Taxable", "current_price": 28.84, "credit_per_share": 0.6659, "target_ask": 0.13, "opt_bid": 4.75, "opt_ask": 5.05, "est_profit_pct": -658.4, "can_close_target": false}, {"ticker": "CRWV", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 1, "cap_req": 5500.0, "premium": 217.34, "open_date": "Oct 19, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 58.54, "credit_per_share": 2.1734, "target_ask": 0.43, "opt_bid": 0.06, "opt_ask": 0.08, "est_profit_pct": 96.3, "can_close_target": true}, {"ticker": "RIVN", "strategy": "CSP", "strike": "$13.5", "strike_val": 13.5, "expiration": "Oct 30, 2026", "dte": 1, "qty": 5, "cap_req": 6750.0, "premium": 211.68, "open_date": "Sep 28, 2026", "account_id": "787a86b7-ba40-49a7-8e9a-00c83c130b0b", "account": "Roth IRA", "current_price": 12.07, "credit_per_share": 0.4234, "target_ask": 0.08, "opt_bid": 1.89, "opt_ask": 2.26, "est_profit_pct": -433.8, "can_close_target": false}, {"ticker": "QCOM", "strategy": "CSP", "strike": "$160", "strike_val": 160.0, "expiration": "Oct 30, 2026", "dte": 1, "qty": 1, "cap_req": 16000.0, "premium": 184.34, "open_date": "Sep 29, 2026", "account_id": "b413eac4-629e-4221-8567-130a79921c8a", "account": "Taxable", "current_price": 185.395, "credit_per_share": 1.8434, "target_ask": 0.37, "opt_bid": 0.0, "opt_ask": 0.03, "est_profit_pct": 98.4, "can_close_target": true}, {"ticker": "FISV", "strategy": "CC", "strike": "$54", "strike_val": 54.0, "expiration": "Nov 13, 2026", "dte": 15, "qty": 2, "cap_req": 10800.0, "premium": 138.67, "open_date": "Oct 15, 2026", "account_id": "2c7dbd9b-357f-4c4e-a1e1-e1d97900f492", "account": "Trad IRA", "current_price": 48.47, "credit_per_share": 0.6933, "target_ask": 0.14, "opt_bid": 0.65, "opt_ask": 0.95, "est_profit_pct": -37.0, "can_close_target": false}, {"ticker": "UBER", "strategy": "CC", "strike": "$77", "strike_val": 77.0, "expiration": "Nov 06, 2026", "dte": 8, "qty": 1, "cap_req": 7700.0, "premium": 131.34, "open_date": "Oct 09, 2026", "account_id": "b413eac4-629e-4221-8567-130a79921c8a", "account": "Taxable", "current_price": 65.27, "credit_per_share": 1.3134, "target_ask": 0.26, "opt_bid": 0.15, "opt_ask": 0.2, "est_profit_pct": 84.8, "can_close_target": true}];
+        const closedPositions = [{"ticker": "CMCSA", "strategy": "CSP", "strike": "$21", "strike_val": 21.0, "expiration": "Oct 30, 2026", "qty": 5, "cap_req": 10500.0, "pnl": 361.61, "open_date": "Oct 22, 2026", "close_date": "Oct 22, 2026", "close_reason": "Bought to Close"}, {"ticker": "O", "strategy": "CSP", "strike": "$55", "strike_val": 55.0, "expiration": "Oct 16, 2026", "qty": 3, "cap_req": 16500.0, "pnl": 213.97, "open_date": "Oct 15, 2026", "close_date": "Oct 15, 2026", "close_reason": "Bought to Close"}, {"ticker": "OKLO", "strategy": "CC", "strike": "$39", "strike_val": 39.0, "expiration": "Oct 30, 2026", "qty": 1, "cap_req": 3900.0, "pnl": 259.33, "open_date": "Oct 15, 2026", "close_date": "Oct 15, 2026", "close_reason": "Bought to Close"}];
 
         function formatCurrency(val) {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0, minimumFractionDigits: 0 }).format(Math.round(val));
@@ -436,17 +487,17 @@
 
                 return `
                     <tr>
-                        <td><span class="badge ${p.strategy === 'CSP' ? 'badge-csp' : 'badge-cc'}">${p.strategy}</span></td>
-                        <td><strong style="color: #fff; font-size: 1rem;">${p.ticker}</strong></td>
-                        <td class="text-right" style="font-weight: 700; color: ${priceColor};">${p.current_price > 0 ? formatPrice(p.current_price) : '-'}</td>
-                        <td style="font-weight: 700; color: #fff;">${p.strike}</td>
-                        <td>${p.expiration}</td>
-                        <td style="font-weight: 600; color: var(--text-muted);">${dteDisplay}</td>
-                        <td class="text-right" style="font-weight: 700;">${p.qty}</td>
-                        <td class="text-right" style="color: var(--text-muted);">${formatCurrency(p.cap_req)}</td>
-                        <td class="text-right positive" style="font-weight: 700;">${formatCurrency(p.premium)}</td>
-                        <td class="text-right positive" style="font-weight: 700;">${retPct}</td>
-                        <td style="text-align: center; white-space: nowrap;">${render80Cell(p)}</td>
+                        <td class="cell-strat"><span class="badge ${p.strategy === 'CSP' ? 'badge-csp' : 'badge-cc'}">${p.strategy}</span></td>
+                        <td class="cell-ticker"><strong style="color: #fff; font-size: 1rem;">${p.ticker}</strong></td>
+                        <td data-label="Price" class="text-right" style="font-weight: 700; color: ${priceColor};">${p.current_price > 0 ? formatPrice(p.current_price) : '-'}</td>
+                        <td data-label="Strike" style="font-weight: 700; color: #fff;">${p.strike}</td>
+                        <td data-label="Expiration">${p.expiration}</td>
+                        <td data-label="DTE" style="font-weight: 600; color: var(--text-muted);">${dteDisplay}</td>
+                        <td data-label="Qty" class="text-right" style="font-weight: 700;">${p.qty}</td>
+                        <td data-label="Capital Req" class="text-right" style="color: var(--text-muted);">${formatCurrency(p.cap_req)}</td>
+                        <td data-label="Premium" class="text-right positive cell-hero" style="font-weight: 700;">${formatCurrency(p.premium)}</td>
+                        <td data-label="Return" class="text-right positive" style="font-weight: 700;">${retPct}</td>
+                        <td data-label="80% Close" class="cell-wide" style="text-align: center; white-space: nowrap;">${render80Cell(p)}</td>
                     </tr>
                 `;
             }).join('');
@@ -454,10 +505,10 @@
             const readyCount = filtered.filter(p => p.can_close_target).length;
             totalRow.innerHTML = `
                 <td colspan="7">Total (${filtered.length} Positions)</td>
-                <td class="text-right" style="color: #64b5f6;">${formatCurrency(subCap)}</td>
-                <td class="text-right positive">${formatCurrency(subPrem)}</td>
-                <td class="text-right positive">${subCap > 0 ? ((subPrem / subCap) * 100).toFixed(2) + '%' : '-'}</td>
-                <td style="text-align: center; color: ${readyCount > 0 ? 'var(--accent-green)' : 'var(--text-muted)'};">${readyCount} ready</td>
+                <td data-label="Capital" class="text-right" style="color: #64b5f6;">${formatCurrency(subCap)}</td>
+                <td data-label="Premium" class="text-right positive">${formatCurrency(subPrem)}</td>
+                <td data-label="Return" class="text-right positive">${subCap > 0 ? ((subPrem / subCap) * 100).toFixed(2) + '%' : '-'}</td>
+                <td data-label="80% Close" style="text-align: center; color: ${readyCount > 0 ? 'var(--accent-green)' : 'var(--text-muted)'};">${readyCount} ready</td>
             `;
         }
 
@@ -490,15 +541,15 @@
 
                 return `
                     <tr>
-                        <td style="color: #fff; font-weight: 600;">${p.close_date}</td>
-                        <td style="color: var(--text-muted);">${p.open_date}</td>
-                        <td><span class="badge ${p.strategy === 'CSP' ? 'badge-csp' : 'badge-cc'}">${p.strategy}</span></td>
-                        <td><strong style="color: #fff; font-size: 1rem;">${p.ticker}</strong></td>
-                        <td style="font-weight: 700; color: #fff;">${p.strike}</td>
-                        <td>${p.expiration}</td>
-                        <td class="text-right" style="font-weight: 700;">${p.qty}</td>
-                        <td><span style="background: rgba(255,255,255,0.06); padding: 3px 8px; border-radius: 6px; font-size: 0.78rem; color: var(--text-muted);">${p.close_reason}</span></td>
-                        <td class="text-right ${pnlClass}" style="font-weight: 700; font-size: 0.95rem;">${pnlStr}</td>
+                        <td data-label="Closed" style="color: #fff; font-weight: 600;">${p.close_date}</td>
+                        <td data-label="Opened" style="color: var(--text-muted);">${p.open_date}</td>
+                        <td class="cell-strat"><span class="badge ${p.strategy === 'CSP' ? 'badge-csp' : 'badge-cc'}">${p.strategy}</span></td>
+                        <td class="cell-ticker"><strong style="color: #fff; font-size: 1rem;">${p.ticker}</strong></td>
+                        <td data-label="Strike" style="font-weight: 700; color: #fff;">${p.strike}</td>
+                        <td data-label="Expiration">${p.expiration}</td>
+                        <td data-label="Qty" class="text-right" style="font-weight: 700;">${p.qty}</td>
+                        <td data-label="Status"><span style="background: rgba(255,255,255,0.06); padding: 3px 8px; border-radius: 6px; font-size: 0.78rem; color: var(--text-muted);">${p.close_reason}</span></td>
+                        <td data-label="Net P&L" class="text-right ${pnlClass} cell-hero" style="font-weight: 700; font-size: 0.95rem;">${pnlStr}</td>
                     </tr>
                 `;
             }).join('');
@@ -507,9 +558,9 @@
             const totPnlStr = (subPnl >= 0 ? '+' : '') + formatPrice(subPnl);
             totalRow.innerHTML = `
                 <td colspan="6">Total (${filtered.length} Closed Positions)</td>
-                <td class="text-right" style="font-weight: 700; color: #fff;">${subQty}</td>
+                <td data-label="Contracts" class="text-right" style="font-weight: 700; color: #fff;">${subQty}</td>
                 <td></td>
-                <td class="text-right ${totPnlClass}" style="font-size: 1.05rem; font-weight: 800;">${totPnlStr}</td>
+                <td data-label="Net P&L" class="text-right ${totPnlClass}" style="font-size: 1.05rem; font-weight: 800;">${totPnlStr}</td>
             `;
         }
 
